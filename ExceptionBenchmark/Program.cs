@@ -11,12 +11,14 @@ namespace ExceptionBenchmark
 
         static void Main(string[] args)
         {
-            var throwing = ThrowingBenchmark();
-            var operationResult = OperationResultBenchmark();
-            Console.WriteLine($"throwing: {throwing.ElapsedTicks} ticks | Ticks per Operation: {(float)throwing.ElapsedTicks / Iterations}");
-            Console.WriteLine($"operationResult: {operationResult.ElapsedTicks} ticks | Ticks per Operation: {(float)operationResult.ElapsedTicks / Iterations}");
-            Console.WriteLine($"throwing/operationResult: {(float)throwing.ElapsedTicks / operationResult.ElapsedTicks}");
-            Console.ReadLine();
+            do
+            {
+                var throwing = ThrowingBenchmark();
+                var operationResult = OperationResultBenchmark();
+                Console.WriteLine($"throwing: {throwing.ElapsedTicks} ticks | Ticks per Operation: {(float)throwing.ElapsedTicks / Iterations}");
+                Console.WriteLine($"operationResult: {operationResult.ElapsedTicks} ticks | Ticks per Operation: {(float)operationResult.ElapsedTicks / Iterations}");
+                Console.WriteLine($"throwing/operationResult: {(float)throwing.ElapsedTicks / operationResult.ElapsedTicks}");
+            } while (string.IsNullOrEmpty(Console.ReadLine()));
         }
 
         private static Stopwatch ThrowingBenchmark()
@@ -47,6 +49,7 @@ namespace ExceptionBenchmark
             for (int i = 0; i < Iterations; i++)
             {
                 var result = service.Operation();
+                result.Success = false;
             }
             timer.Stop();
             Console.Clear();
